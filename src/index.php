@@ -6,32 +6,31 @@ $runtime1 = new \parallel\Runtime();
 $runtime2 = new \parallel\Runtime();
 $runtime3 = new \parallel\Runtime();
 
-$runtime1->run(function(){
+ob_end_flush();
+ob_implicit_flush();
+
+$runtime1->run(function() {
     while (1) {
-        echo '<span class="marker">○</span>';
-        ob_flush();
+        echo '<span class="marker">○</span> ';
         time_nanosleep(0, 100000);
     }
 });
 
-$runtime2->run(function(){
+$runtime2->run(function() {
     while (1) {
-        echo '<span class="marker">☓</span>';
-        ob_flush();
+        echo '<span class="marker">☓</span> ';
         time_nanosleep(0, 100000);
     }
 });
 
-$runtime3->run(function(){
+$runtime3->run(function() {
     while(1) {
         echo <<<SCRIPT
-        <script>
+        <script class="marker">
             document.querySelectorAll(".marker").forEach(e => e.parentNode.removeChild(e));
-            document.currentScript.remove();
         </script>
         SCRIPT;
-        ob_flush();
-        time_nanosleep(0, 1000000);
+        time_nanosleep(0, 10000000);
     }
 });
 
